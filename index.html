@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CodexPlay — Discover, explore, and play your next favorite games instantly." />
+  <title>CodexPlay | Discover Your Next Favorite Game</title>
+
+  <!-- Prevent dark mode flicker -->
+  <script>
+    (function () {
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./dist/output.css" />
+</head>
+<body class="bg-page text-gray-900 dark:text-gray-100 overflow-x-hidden">
+
+  <!-- Subtle pixel grid texture -->
+  <div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 pixel-grid-overlay opacity-60"></div>
+
+  <!-- Floating 2D background shapes -->
+  <div aria-hidden="true" class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="blob w-72 h-72 bg-violet-300/30 dark:bg-violet-600/20 -top-20 -left-20 animate-float-slow"></div>
+    <div class="blob w-96 h-96 bg-cyan-200/25 dark:bg-cyan-500/10 top-1/4 -right-32 animate-float-medium"></div>
+    <div class="blob w-64 h-64 bg-pink-200/30 dark:bg-pink-500/15 bottom-1/4 left-1/4 animate-float-fast"></div>
+    <div class="blob w-80 h-80 bg-indigo-200/20 dark:bg-indigo-600/15 -bottom-20 right-1/4 animate-float-slow"></div>
+    <!-- 2D vector-style shapes -->
+    <svg class="absolute top-32 left-[10%] w-14 h-14 text-violet-400/30 dark:text-violet-500/20 animate-float-medium" viewBox="0 0 64 64" fill="currentColor"><rect x="8" y="8" width="48" height="48"/></svg>
+    <svg class="absolute top-1/2 right-[8%] w-12 h-12 text-cyan-400/25 dark:text-cyan-500/15 animate-float-fast" viewBox="0 0 48 48" fill="currentColor"><rect x="4" y="4" width="40" height="40"/></svg>
+    <svg class="absolute bottom-40 left-[15%] w-10 h-10 text-pink-400/30 dark:text-pink-500/20 animate-float-slow" viewBox="0 0 40 40" fill="currentColor"><rect x="4" y="4" width="32" height="32" transform="rotate(45 20 20)"/></svg>
+  </div>
+
+  <!-- Navbar -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <nav class="glass mx-4 mt-4 px-4 sm:px-6 lg:px-8 max-w-7xl lg:mx-auto">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-2 group">
+          <span class="pixel-logo">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </span>
+          <span class="font-display font-bold text-xl tracking-tight">Codex<span class="text-gradient">Play</span></span>
+        </a>
+
+        <!-- Desktop nav -->
+        <ul class="hidden md:flex items-center gap-8">
+          <li><a href="#games" class="nav-link" data-section="games">Games</a></li>
+          <li><a href="#features" class="nav-link" data-section="features">Features</a></li>
+          <li><a href="#how-it-works" class="nav-link" data-section="how-it-works">How It Works</a></li>
+          <li><a href="#testimonials" class="nav-link" data-section="testimonials">Reviews</a></li>
+        </ul>
+
+        <div class="flex items-center gap-3">
+          <!-- Dark mode toggle -->
+          <button id="theme-toggle" type="button" aria-label="Toggle dark mode" class="pixel-icon-btn">
+            <svg id="icon-sun" class="w-5 h-5 text-amber-500 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+            <svg id="icon-moon" class="w-5 h-5 text-violet-600 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+          </button>
+
+          <a href="#games" class="hidden sm:inline-flex btn-primary text-sm !px-5 !py-2.5"><span>Browse Games</span></a>
+
+          <!-- Mobile menu button -->
+          <button id="mobile-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" class="md:hidden pixel-icon-btn">
+            <svg id="icon-menu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t-[3px] border-solid mt-2 pt-4" style="border-color: var(--pixel-border)">
+        <ul class="flex flex-col gap-3">
+          <li><a href="#games" class="nav-link block py-2" data-section="games">Games</a></li>
+          <li><a href="#features" class="nav-link block py-2" data-section="features">Features</a></li>
+          <li><a href="#how-it-works" class="nav-link block py-2" data-section="how-it-works">How It Works</a></li>
+          <li><a href="#testimonials" class="nav-link block py-2" data-section="testimonials">Reviews</a></li>
+          <li class="pt-2"><a href="#games" class="btn-primary w-full text-sm"><span>Browse Games</span></a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="relative z-10">
+
+    <!-- HERO -->
+    <section id="hero" class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+      <div class="max-w-5xl mx-auto w-full text-center">
+        <div class="glass-strong p-8 sm:p-12 lg:p-16 hero-enter">
+          <span class="hero-enter delay-1 pixel-badge mb-6">
+            <span class="w-2 h-2 bg-emerald-500"></span>
+            10,000+ Games Available
+          </span>
+          <h1 class="hero-enter delay-2 hero-pixel-title mb-6">
+            Discover Your Next<br />
+            <span class="text-gradient">Favorite Game</span>
+          </h1>
+          <p class="hero-enter delay-3 text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-10">
+            Explore a massive library of premium titles. Instant access, cloud saves, and seamless multiplayer — all in one stunning platform.
+          </p>
+          <div class="hero-enter delay-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#games" class="btn-primary w-full sm:w-auto">
+              <span>Start Exploring</span>
+              <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+            <a href="#features" class="btn-secondary w-full sm:w-auto">Learn More</a>
+          </div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="grid grid-cols-3 gap-4 sm:gap-8 mt-12 max-w-2xl mx-auto hero-enter delay-4">
+          <div class="glass p-4 sm:p-6">
+            <p class="font-display text-2xl sm:text-3xl font-bold text-gradient">10K+</p>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Games</p>
+          </div>
+          <div class="glass p-4 sm:p-6">
+            <p class="font-display text-2xl sm:text-3xl font-bold text-gradient">2M+</p>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Players</p>
+          </div>
+          <div class="glass p-4 sm:p-6">
+            <p class="font-display text-2xl sm:text-3xl font-bold text-gradient">4.9</p>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Rating</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME SHOWCASE -->
+    <section id="games" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-14 reveal">
+          <h2 class="section-title mb-4">Trending <span class="text-gradient">Games</span></h2>
+          <p class="section-subtitle mx-auto">Hand-picked titles loved by our community. Find your next adventure.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <!-- Game Card 1 -->
+          <article class="game-card reveal group">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" alt="Cyber Legends" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Cyber Legends</h3>
+              <span class="game-tag">Action</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$19.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Buy Cyber Legends">Buy Now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Game Card 2 -->
+          <article class="game-card reveal group" style="transition-delay: 0.1s">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80" alt="Mystic Realms" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+              <span class="discount-badge">-30%</span>
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Mystic Realms</h3>
+              <span class="game-tag">RPG</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$20.99</span>
+                  <span class="game-price-original">$29.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Add Mystic Realms to cart">Add to Cart</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Game Card 3 -->
+          <article class="game-card reveal group" style="transition-delay: 0.2s">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80" alt="Velocity Rush" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Velocity Rush</h3>
+              <span class="game-tag">Racing</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$14.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Buy Velocity Rush">Buy Now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Game Card 4 -->
+          <article class="game-card reveal group">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&q=80" alt="Starbound Odyssey" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+              <span class="discount-badge">-25%</span>
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Starbound Odyssey</h3>
+              <span class="game-tag">Indie</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$9.74</span>
+                  <span class="game-price-original">$12.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Add Starbound Odyssey to cart">Add to Cart</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Game Card 5 -->
+          <article class="game-card reveal group" style="transition-delay: 0.1s">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1493711664972-8a2cb8f3f0a6?w=600&q=80" alt="Shadow Tactics" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Shadow Tactics</h3>
+              <span class="game-tag">Strategy</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$24.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Buy Shadow Tactics">Buy Now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Game Card 6 -->
+          <article class="game-card reveal group" style="transition-delay: 0.2s">
+            <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85c1bdf?w=600&q=80" alt="Arena Champions" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
+              <span class="discount-badge">-20%</span>
+            </div>
+            <div class="game-card-body">
+              <h3 class="game-card-title">Arena Champions</h3>
+              <span class="game-tag">MOBA</span>
+              <div class="game-card-footer">
+                <div class="game-price-block">
+                  <span class="game-price">$15.99</span>
+                  <span class="game-price-original">$19.99</span>
+                </div>
+                <button type="button" class="btn-buy" aria-label="Buy Arena Champions">Buy Now</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="text-center mt-12 reveal">
+          <a href="#" class="btn-secondary">View All Games →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-14 reveal">
+          <h2 class="section-title mb-4">Why Choose <span class="text-gradient">CodexPlay</span></h2>
+          <p class="section-subtitle mx-auto">Everything you need for the ultimate gaming experience, built for speed and simplicity.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div class="feature-card reveal">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Huge Game Library</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Access over 10,000 titles across every genre — from indie gems to AAA blockbusters.</p>
+          </div>
+
+          <div class="feature-card reveal" style="transition-delay: 0.1s">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Instant Access</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">No downloads, no waiting. Click play and jump straight into your game within seconds.</p>
+          </div>
+
+          <div class="feature-card reveal" style="transition-delay: 0.2s">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Cloud Saves</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Your progress syncs automatically across all devices. Pick up right where you left off.</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Multiplayer Support</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Team up with friends or compete globally with seamless matchmaking and voice chat.</p>
+          </div>
+
+          <div class="feature-card reveal" style="transition-delay: 0.1s">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Secure Platform</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Enterprise-grade security keeps your account and purchases safe at all times.</p>
+          </div>
+
+          <div class="feature-card reveal" style="transition-delay: 0.2s">
+            <div class="icon-2d mb-5">
+              <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Best Deals Daily</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Exclusive discounts and free game giveaways every week. Never miss a deal.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 reveal">
+          <h2 class="section-title mb-4">How It <span class="text-gradient">Works</span></h2>
+          <p class="section-subtitle mx-auto">Get from signup to gameplay in three simple steps.</p>
+        </div>
+
+        <div class="relative grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-6">
+          <div class="step-connector left-[20%] right-[20%] w-[60%]"></div>
+
+          <!-- Step 1 -->
+          <div class="relative text-center reveal">
+            <div class="w-20 h-20 mx-auto flex items-center justify-center mb-6 relative z-10 pixel-outline"
+              style="background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.15));">
+              <span class="pixel-step-badge">1</span>
+              <svg class="w-10 h-10 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Sign Up</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm max-w-xs mx-auto">Create your free account in under 30 seconds. No credit card required.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="relative text-center reveal" style="transition-delay: 0.15s">
+            <div class="w-20 h-20 mx-auto flex items-center justify-center mb-6 relative z-10 pixel-outline"
+              style="background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.15));">
+              <span class="pixel-step-badge">2</span>
+              <svg class="w-10 h-10 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Choose Game</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm max-w-xs mx-auto">Browse our curated library and pick any title that catches your eye.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="relative text-center reveal" style="transition-delay: 0.3s">
+            <div class="w-20 h-20 mx-auto flex items-center justify-center mb-6 relative z-10 pixel-outline"
+              style="background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.15));">
+              <span class="pixel-step-badge">3</span>
+              <svg class="w-10 h-10 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-xl mb-2">Play Instantly</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm max-w-xs mx-auto">Hit play and dive in. Your game streams instantly with zero installation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-14 reveal">
+          <h2 class="section-title mb-4">What Players <span class="text-gradient">Say</span></h2>
+          <p class="section-subtitle mx-auto">Join millions of happy gamers who made CodexPlay their home.</p>
+        </div>
+
+        <div class="testimonial-track flex gap-6 overflow-x-auto pb-4 px-2 snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:pb-0">
+          <!-- Review 1 -->
+          <blockquote class="testimonial-card glass-card p-6 sm:p-8 min-w-[300px] lg:min-w-0 flex-shrink-0 reveal">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-6">"CodexPlay completely changed how I discover games. The instant play feature is a game-changer — literally no waiting!"</p>
+            <footer class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Alex Rivera" class="pixel-avatar" loading="lazy" width="44" height="44" />
+              <div>
+                <p class="font-semibold text-sm">Alex Rivera</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Pro Gamer</p>
+              </div>
+            </footer>
+          </blockquote>
+
+          <!-- Review 2 -->
+          <blockquote class="testimonial-card glass-card p-6 sm:p-8 min-w-[300px] lg:min-w-0 flex-shrink-0 reveal" style="transition-delay: 0.1s">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-6">"The library is insane and cloud saves mean I can switch between my PC and laptop seamlessly. Best gaming platform I've used."</p>
+            <footer class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Sarah Chen" class="pixel-avatar" loading="lazy" width="44" height="44" />
+              <div>
+                <p class="font-semibold text-sm">Sarah Chen</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Streamer</p>
+              </div>
+            </footer>
+          </blockquote>
+
+          <!-- Review 3 -->
+          <blockquote class="testimonial-card glass-card p-6 sm:p-8 min-w-[300px] lg:min-w-0 flex-shrink-0 reveal" style="transition-delay: 0.2s">
+            <div class="flex gap-1 mb-4">
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-6">"As a casual gamer, I love how easy it is to find indie titles I'd never discover elsewhere. The UI is gorgeous and super smooth."</p>
+            <footer class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop" alt="Marcus Johnson" class="pixel-avatar" loading="lazy" width="44" height="44" />
+              <div>
+                <p class="font-semibold text-sm">Marcus Johnson</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Indie Enthusiast</p>
+              </div>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="relative overflow-hidden reveal pixel-outline">
+          <div class="absolute inset-0 bg-gradient-to-br from-violet-100/80 to-indigo-100/60 dark:from-violet-950/80 dark:to-indigo-950/60"></div>
+          <div class="relative glass-strong p-10 sm:p-14 text-center">
+            <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-gray-900 dark:text-white leading-tight">
+              Ready to <span class="text-gradient">Level Up</span>?
+            </h2>
+            <p class="text-gray-600 dark:text-gray-300 text-lg mb-8 max-w-xl mx-auto">
+              Join over 2 million players and start your gaming journey today. Free to sign up, endless games to explore.
+            </p>
+            <a href="#games" class="btn-primary">
+              <span>Get Started Free</span>
+              <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-4 border-t-[3px] border-solid" style="border-color: var(--pixel-border)">
+    <p class="text-center text-sm text-gray-900 dark:text-white">
+      © 2026 Krish | Built with ❤️ and Code | All Rights Reserved
+    </p>
+  </footer>
+
+  <script src="./src/main.js" defer></script>
+</body>
+</html>
