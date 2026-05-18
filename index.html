@@ -66,6 +66,12 @@
             <svg id="icon-moon" class="w-5 h-5 text-violet-600 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
           </button>
 
+          <!-- Cart Button -->
+          <button id="cart-btn" type="button" aria-label="Open cart" class="pixel-icon-btn relative">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-violet-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+          </button>
+
           <a href="#games" class="hidden sm:inline-flex btn-primary text-sm !px-5 !py-2.5"><span>Browse Games</span></a>
 
           <!-- Mobile menu button -->
@@ -143,7 +149,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           <!-- Game Card 1 -->
-          <article class="game-card reveal group">
+          <article class="game-card reveal group" data-name="Cyber Legends" data-price="19.99">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" alt="Cyber Legends" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
             </div>
@@ -154,13 +160,16 @@
                 <div class="game-price-block">
                   <span class="game-price">$19.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Buy Cyber Legends">Buy Now</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Cyber Legends now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Cyber Legends to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
 
           <!-- Game Card 2 -->
-          <article class="game-card reveal group" style="transition-delay: 0.1s">
+          <article class="game-card reveal group" style="transition-delay: 0.1s" data-name="Mystic Realms" data-price="20.99">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80" alt="Mystic Realms" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
               <span class="discount-badge">-30%</span>
@@ -173,13 +182,16 @@
                   <span class="game-price">$20.99</span>
                   <span class="game-price-original">$29.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Add Mystic Realms to cart">Add to Cart</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Mystic Realms now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Mystic Realms to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
 
           <!-- Game Card 3 -->
-          <article class="game-card reveal group" style="transition-delay: 0.2s">
+          <article class="game-card reveal group" style="transition-delay: 0.2s" data-name="Velocity Rush" data-price="14.99">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80" alt="Velocity Rush" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
             </div>
@@ -190,13 +202,16 @@
                 <div class="game-price-block">
                   <span class="game-price">$14.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Buy Velocity Rush">Buy Now</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Velocity Rush now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Velocity Rush to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
 
           <!-- Game Card 4 -->
-          <article class="game-card reveal group">
+          <article class="game-card reveal group" data-name="Starbound Odyssey" data-price="9.74">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&q=80" alt="Starbound Odyssey" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
               <span class="discount-badge">-25%</span>
@@ -209,13 +224,16 @@
                   <span class="game-price">$9.74</span>
                   <span class="game-price-original">$12.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Add Starbound Odyssey to cart">Add to Cart</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Starbound Odyssey now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Starbound Odyssey to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
 
           <!-- Game Card 5 -->
-          <article class="game-card reveal group" style="transition-delay: 0.1s">
+          <article class="game-card reveal group" style="transition-delay: 0.1s" data-name="Shadow Tactics" data-price="24.99">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1493711664972-8a2cb8f3f0a6?w=600&q=80" alt="Shadow Tactics" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
             </div>
@@ -226,13 +244,16 @@
                 <div class="game-price-block">
                   <span class="game-price">$24.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Buy Shadow Tactics">Buy Now</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Shadow Tactics now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Shadow Tactics to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
 
           <!-- Game Card 6 -->
-          <article class="game-card reveal group" style="transition-delay: 0.2s">
+          <article class="game-card reveal group" style="transition-delay: 0.2s" data-name="Arena Champions" data-price="15.99">
             <div class="pixel-thumb-wrap relative aspect-[4/3] overflow-hidden">
               <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85c1bdf?w=600&q=80" alt="Arena Champions" class="game-image pixel-thumb w-full h-full object-cover" loading="lazy" width="600" height="450" />
               <span class="discount-badge">-20%</span>
@@ -245,7 +266,10 @@
                   <span class="game-price">$15.99</span>
                   <span class="game-price-original">$19.99</span>
                 </div>
-                <button type="button" class="btn-buy" aria-label="Buy Arena Champions">Buy Now</button>
+                <div class="flex gap-2">
+                  <button type="button" class="btn-buy btn-buy-now" aria-label="Buy Arena Champions now">Buy Now</button>
+                  <button type="button" class="btn-buy btn-add-cart" aria-label="Add Arena Champions to cart">Add to Cart</button>
+                </div>
               </div>
             </div>
           </article>
@@ -455,6 +479,62 @@
     </section>
 
   </main>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
+    <div id="cart-overlay" class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute right-0 top-0 h-full w-full max-w-md glass-strong p-6 sm:p-8 border-l-[3px] border-solid" style="border-color: var(--pixel-border)">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-display font-bold text-xl">Your Cart</h3>
+        <button id="close-cart" type="button" class="pixel-icon-btn">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="cart-items" class="space-y-4 mb-6 max-h-[60vh] overflow-y-auto">
+        <p id="cart-empty" class="text-gray-500 dark:text-gray-400 text-sm">Your cart is empty</p>
+      </div>
+      <div id="cart-total-section" class="hidden border-t-[3px] border-solid pt-4" style="border-color: var(--pixel-border)">
+        <div class="flex items-center justify-between mb-4">
+          <span class="font-semibold">Total</span>
+          <span id="cart-total" class="font-display font-bold text-xl text-gradient">$0.00</span>
+        </div>
+        <button id="buy-cart" type="button" class="btn-primary w-full">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUY NOW CONFIRMATION MODAL -->
+  <div id="buy-now-modal" class="fixed inset-0 z-[65] hidden">
+    <div id="buy-now-overlay" class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="glass-strong p-6 sm:p-8 max-w-sm w-full border-[3px] border-solid" style="border-color: var(--pixel-border)">
+        <h3 class="font-display font-bold text-xl mb-4 text-gray-900 dark:text-white">Confirm Purchase</h3>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">Are you sure you want to purchase this game?</p>
+        <div class="flex gap-3 justify-end">
+          <button id="buy-now-cancel" type="button" class="btn-secondary">Cancel</button>
+          <button id="buy-now-proceed" type="button" class="btn-primary">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD TO CART CONFIRMATION MODAL -->
+  <div id="add-to-cart-modal" class="fixed inset-0 z-[65] hidden">
+    <div id="add-to-cart-overlay" class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="glass-strong p-6 sm:p-8 max-w-sm w-full border-[3px] border-solid" style="border-color: var(--pixel-border)">
+        <h3 class="font-display font-bold text-xl mb-4 text-gray-900 dark:text-white">Add to Cart</h3>
+        <p id="add-to-cart-message" class="text-gray-600 dark:text-gray-300 mb-6">Do you want to add this game to your cart?</p>
+        <div class="flex gap-3 justify-end">
+          <button id="add-to-cart-cancel" type="button" class="btn-secondary">Cancel</button>
+          <button id="add-to-cart-proceed" type="button" class="btn-primary">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGE CONTAINER -->
+  <div id="message-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[70] flex flex-col gap-2"></div>
 
   <!-- FOOTER -->
   <footer class="py-8 px-4 border-t-[3px] border-solid" style="border-color: var(--pixel-border)">
