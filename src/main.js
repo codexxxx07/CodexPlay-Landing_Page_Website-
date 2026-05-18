@@ -35,6 +35,7 @@
     cartCount.textContent = cart.length;
     if (cart.length > 0) {
       cartCount.classList.remove('hidden');
+      cartCount.classList.add('flex');
       cartTotalSection.classList.remove('hidden');
       
       cartItems.innerHTML = cart.map((item, index) => `
@@ -53,6 +54,7 @@
       cartTotal.textContent = `$${total.toFixed(2)}`;
     } else {
       cartCount.classList.add('hidden');
+      cartCount.classList.remove('flex');
       cartTotalSection.classList.add('hidden');
       cartItems.innerHTML = '';
       
