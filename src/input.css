@@ -92,6 +92,11 @@
 
   }
 
+  /* For better scroll smoothness in some browsers */
+  body {
+    scroll-behavior: smooth;
+  }
+
 
 
   body {
@@ -654,10 +659,9 @@
 
     transform: translateY(24px);
 
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 
   }
-
 
 
   .reveal.visible {

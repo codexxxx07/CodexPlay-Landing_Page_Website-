@@ -275,7 +275,8 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove('visible');
         }
       });
     },
